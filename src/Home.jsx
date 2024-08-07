@@ -8,6 +8,7 @@ function Home(){
     const [formdata,setformdata] = useState('')
     const [arr_data,setarr_data] = useState([])
 
+    
   // this useEffect will run only one time when the page get reloads
     useEffect(()=>{
       
@@ -22,11 +23,9 @@ function Home(){
 // below will run only when anything at array data will be updated.
     useEffect(()=>{
       
-      if(arr_data.length){
+      if(arr_data.length > 0){
         localStorage.setItem('task_arr',JSON.stringify(arr_data))
       }
-      
-
       
     },[arr_data])
 
@@ -77,7 +76,7 @@ function Home(){
 
             {
               arr_data.map((item,index) => {
-                return <Task item={item} key={index}  />
+                return <Task item={item} key={index} index={index} setarr_data={setarr_data}  />
 
             })
             }
