@@ -4,19 +4,23 @@
 function Task(props){
 
     function handleDelete(){
-
-        //console.log("props index", props.index)
-        // first we have to delete local storage before deleting in arr data
         
-        let cur_local_data = JSON.parse(localStorage.getItem("task_arr"))
-        cur_local_data = cur_local_data.filter((item, index) => index != props.index)
-        localStorage.setItem("task_arr", JSON.stringify(cur_local_data))
-        console.log("cur_local_data", cur_local_data)
+        // we need to first delete from local storage then we will delete from arr data . 
+        
+        const local_arr = JSON.parse(localStorage.getItem('task_arr')).filter((item,index)=>index!== props.index)
+       
+        localStorage.setItem('task_arr',JSON.stringify(local_arr))
 
-        props.setarr_data((prev) => prev.filter(
-            (item, index) => index != props.index
-        ))
-    }
+        props.setarr_data((prev)=>{
+            
+            const arr = prev.filter((item,index)=> index!==props.index)
+            return arr
+            
+        })
+
+        
+
+    }    
 
     return(
         <tbody >
