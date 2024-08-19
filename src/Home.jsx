@@ -26,7 +26,7 @@ function Home(){
         localStorage.setItem('task_arr',JSON.stringify(arr_data))
       }
       
-      //console.log(arr_data);
+      console.log(arr_data);
       
     },[arr_data])
 
@@ -57,9 +57,7 @@ function Home(){
                   }}>Add</button>
                 </div>
 
-                <div >
-                  <button type="submit" data-mdb-button-init data-mdb-ripple-init className="btn btn-success">Save</button>
-                </div>
+               
         </div>
          
 
