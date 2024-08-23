@@ -1,7 +1,7 @@
 
 import Home from "./Home";
 import Register from "./register";
-
+import Login from "./login";
 
  
 import {
@@ -19,6 +19,7 @@ const Routes = () =>{
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/register" component={Register} />
+                <Route path="/login" component={Login}/>
             </Switch>
 
         </Router>
