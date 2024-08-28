@@ -1,10 +1,11 @@
 import { useContext } from "react"
 import AuthContext from "./Context/AuthContext"
+import Logout from "./Logout";
 
 function Navbar(){
 
-    const currentuser = useContext(AuthContext)
-    //console.log(currentuser.auth);
+    const {auth} = useContext(AuthContext)
+    
     
     
     
@@ -19,19 +20,20 @@ function Navbar(){
             </button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item">
+                
+                {auth && <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="/home">Home</a>
-                </li>
+                </li>}
                 
                 
-                {!currentuser && <li className="nav-item">
+                {!auth && <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="/register">Register</a>
                 </li>}
 
-                {currentuser ? <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/login">Log out</a>
+                {auth ? <li className="nav-item">
+                <a className="nav-link active" aria-current="page" href="/logout">Log out</a>
                 </li> : <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/register">Log in</a>
+                <a className="nav-link active" aria-current="page" href="/login">Log in</a>
                 </li>}
             </ul>
             <form className="d-flex" role="search">
