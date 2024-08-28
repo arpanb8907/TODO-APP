@@ -1,28 +1,17 @@
-
-import Routes from './routes'
-import Navbar from './navbar'
+import Routes from "./routes";
+import Navbar from "./navbar";
+import AuthContextProvider from "./Context/AuthContextProvider";
 
 function App() {
-  
-    
-
-  
-
   return (
-    <div>
-      <Navbar/>
-      <Routes/>
-      
-      
-     
+    <AuthContextProvider>
+      <div>
+        <Navbar />
 
-
-        
-    </div>
-      
-      
-    
-  )
+        <Routes />
+      </div>
+    </AuthContextProvider>
+  );
 }
 
-export default App
+export default App;

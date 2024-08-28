@@ -2,7 +2,7 @@
 import Home from "./Home";
 import Register from "./register";
 import Login from "./login";
-
+import Base from "./Base";
  
 import {
     BrowserRouter as Router,
@@ -17,7 +17,8 @@ const Routes = () =>{
         <Router>
 
             <Switch>
-                <Route exact path="/" component={Home} />
+                <Route exact path="/" component={Base}/>
+                <Route path="/home" component={Home} />
                 <Route path="/register" component={Register} />
                 <Route path="/login" component={Login}/>
             </Switch>

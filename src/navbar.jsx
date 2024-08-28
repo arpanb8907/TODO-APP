@@ -1,5 +1,14 @@
+import { useContext } from "react"
+import AuthContext from "./Context/AuthContext"
 
 function Navbar(){
+
+    const currentuser = useContext(AuthContext)
+    //console.log(currentuser.auth);
+    
+    
+    
+    
 
     return(
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -11,17 +20,19 @@ function Navbar(){
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/">Home</a>
+                <a className="nav-link active" aria-current="page" href="/home">Home</a>
                 </li>
                 
                 
-                <li className="nav-item">
+                {!currentuser && <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="/register">Register</a>
-                </li>
+                </li>}
 
-                <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/login">Log in</a>
-                </li>
+                {currentuser ? <li className="nav-item">
+                <a className="nav-link active" aria-current="page" href="/login">Log out</a>
+                </li> : <li className="nav-item">
+                <a className="nav-link active" aria-current="page" href="/register">Log in</a>
+                </li>}
             </ul>
             <form className="d-flex" role="search">
                 <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>

@@ -1,10 +1,18 @@
-import React, { useState } from "react";
-import {signInWithEmailAndPassword } from "firebase/auth";
-
+import React, { useContext, useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import Task from "./task";
 import { auth } from "./firebase";
+import { useHistory } from "react-router-dom";
+import AuthContext from "./Context/AuthContext";
+
 function login() {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
+
+  const history = useHistory();
+
+  const { auth: authstate, setauth } = useContext(AuthContext);
+  
 
   const handlesubmit = (e) => {
     e.preventDefault();
@@ -13,20 +21,16 @@ function login() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
+        setauth({ user });
+        //console.log(user.email);
 
-        
-        
-        
+        history.replace("/home");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
 
         console.log(error);
-        
-
-
       });
   };
 
@@ -43,9 +47,7 @@ function login() {
             value={email}
             onChange={(e) => setemail(e.target.value)}
           />
-          <small id="emailHelp" className="form-text text-muted">
-            
-          </small>
+          <small id="emailHelp" className="form-text text-muted"></small>
         </div>
         <div className="form-group">
           <label htmlFor="exampleInputPassword1">Password</label>
@@ -57,7 +59,7 @@ function login() {
             onChange={(e) => setpassword(e.target.value)}
           />
         </div>
-       
+
         <button type="submit" className="btn btn-primary mt-3">
           Log in
         </button>
@@ -65,6 +67,5 @@ function login() {
     </div>
   );
 }
-
 
 export default login;

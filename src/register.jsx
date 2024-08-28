@@ -1,14 +1,15 @@
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useState ,useContext} from "react";
 import { auth, database } from "./firebase";
 import { doc,setDoc } from "firebase/firestore";
+
 
 
 function Register() {
   const [password, setpassword] = useState("");
   const [email, setemail] = useState("");
-
+  
   async function add_user(user) {
 
       try {
@@ -19,6 +20,7 @@ function Register() {
             userid : user.uid 
         });
 
+        
         console.log("user is added");
         
 

@@ -16,7 +16,10 @@ function Home() {
     }
   }, []);
 
-  // below will run only when anything at array data will be updated.
+  // below will run only when anything at array data will be updated.Below is firestore link
+
+  // https://console.firebase.google.com/u/0/project/todo-1221b/firestore/databases/-default-/data/~2Fusers~2FkBXWcjQTLWVElF0WziWwnWJe8OD2
+
   useEffect(() => {
     if (arr_data.length > 0) {
       localStorage.setItem("task_arr", JSON.stringify(arr_data));
@@ -82,6 +85,8 @@ function Home() {
             />
           );
         })}
+
+        
       </table>
     </div>
   );
