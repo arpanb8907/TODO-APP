@@ -1,11 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Task from "./task";
+import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import {database } from "./firebase";
+import AuthContext from "./Context/AuthContext";
+
 
 function Home() {
   //console.log(props.x)
 
   const [formdata, setformdata] = useState("");
   const [arr_data, setarr_data] = useState([]);
+  const [user,setuserId] = useState(null)
+  const {auth} = useContext(AuthContext)
 
   // this useEffect will run only one time when the page get reloads
   useEffect(() => {
@@ -27,6 +33,15 @@ function Home() {
 
     console.log(arr_data);
   }, [arr_data]);
+
+
+  function add_task(){
+
+    if(formdata){
+      setarr_data((prev)=> [...prev,formdata])
+    }
+  }
+  
 
   return (
     <div className="container mt-5">
@@ -55,11 +70,7 @@ function Home() {
             data-mdb-button-init
             data-mdb-ripple-init
             className="btn btn-primary"
-            onClick={() => {
-              if (formdata.length) {
-                setarr_data((prev) => [formdata, ...prev]);
-              }
-            }}
+            onClick={add_task}
           >
             Add
           </button>
@@ -85,8 +96,6 @@ function Home() {
             />
           );
         })}
-
-        
       </table>
     </div>
   );

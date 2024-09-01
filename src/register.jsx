@@ -1,15 +1,25 @@
 
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword,sendEmailVerification } from "firebase/auth";
 import { useState ,useContext} from "react";
 import { auth, database } from "./firebase";
 import { doc,setDoc } from "firebase/firestore";
+import { useHistory } from "react-router-dom";
 
 
 
 function Register() {
   const [password, setpassword] = useState("");
   const [email, setemail] = useState("");
+  const history = useHistory()
   
+  function verifyEmail(){
+    sendEmailVerification(auth.currentUser)
+    .then(()=>{
+      console.log("email verification sent");
+      
+    })
+  }
+
   async function add_user(user) {
 
       try {
@@ -40,8 +50,11 @@ function Register() {
         
         // add user to database
 
+        verifyEmail()
         add_user(user);
         
+        //naviagte to login page
+        history.replace("/login")
         
         
       })
@@ -56,7 +69,7 @@ function Register() {
   return (
     <form className="mx-md-5 col-12 col-md-6" onSubmit={handleSubmit}>
       <div className="form-group">
-        <label for="exampleInputEmail1">Email address</label>
+        <label htmlfor="exampleInputEmail1">Email address</label>
         <input
           type="email"
           class="form-control"
@@ -71,7 +84,7 @@ function Register() {
         </small>
       </div>
       <div className="form-group">
-        <label for="exampleInputPassword1">Password</label>
+        <label htmlfor="exampleInputPassword1">Password</label>
         <input
           type="password"
           className="form-control"
@@ -87,7 +100,7 @@ function Register() {
           Check me out
         </label>
       </div>
-      <button type="submit" className="btn btn-primary">
+      <button type="submit" className="btn btn-primary" >
         Register
       </button>
     </form>
