@@ -15,16 +15,16 @@
 
     const { auth: authstate, setauth } = useContext(AuthContext);
     
-    onAuthStateChanged(auth,(user)=>{
+    // onAuthStateChanged(auth,(user)=>{
 
-      if(user){
-        setauth({user})
-      }
+    //   if(user){
+    //     setauth({user})
+    //   }
 
-      else{
-        setauth(null)
-      }
-    });
+    //   else{
+    //     setauth(null)
+    //   }
+    // });
 
     const handlesubmit = (e) => {
       e.preventDefault();
