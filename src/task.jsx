@@ -1,13 +1,28 @@
 import { useContext, useEffect, useState } from "react";
 import { database } from "./firebase";
 import AuthContext from "./Context/AuthContext";
-import { query, where, getDocs, addDoc, and } from "firebase/firestore";
-import { collection, doc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  query,
+  where,
+  getDocs,
+  addDoc,
+  and,
+  deleteDoc,
+} from "firebase/firestore";
+import {
+  collection,
+  doc,
+  setDoc,
+  updateDoc,
+  deleteField,
+} from "firebase/firestore";
 
 function Task(props) {
   const [isediting, setisediting] = useState(false);
   const [editinput, seteditinput] = useState("");
   const { auth } = useContext(AuthContext);
+  const [issaving, setIssaving] = useState(false);
+  const [isdeleting, setIsdeleting] = useState(false);
 
   function handleditchange(e) {
     seteditinput(e.target.value);
@@ -16,38 +31,44 @@ function Task(props) {
   function handleEdit() {
     setisediting(!isediting);
   }
-  function handleDelete() {
-    // we need to first delete from local storage then we will delete from arr data .
 
-    const local_arr = JSON.parse(localStorage.getItem("task_arr")).filter(
-      (item, index) => index !== props.index
-    );
+  async function handleDelete() {
+    // first delete from the firestore database
+    setIsdeleting(true);
+    const tasklist = doc(database, "todos", props.item.id);
 
-    localStorage.setItem("task_arr", JSON.stringify(local_arr));
+    // await updateDoc(tasklist, {
+    //   taskname: deleteField(),
+    //   userId: deleteField(),
+    // });
+
+    // set ahe resultant array
+
+    try {
+      await deleteDoc(tasklist);
+    } catch (error) {
+      console.error("Error deleting the document", error);
+    }
 
     props.setarr_data((prev) => {
       const arr = prev.filter((item, index) => index !== props.index);
       return arr;
     });
+    setIsdeleting(false);
   }
 
-  function modify_arr(tasklist){
+  function modify_arr(tasklist) {
+    props.setarr_data((prev) => {
+      const arr = [...prev];
 
-    props.setarr_data((prev)=>{
-      const arr = [...prev]
-
-      arr[props.index].taskname = editinput
-      return arr
-
-    })
+      arr[props.index].taskname = editinput;
+      return arr;
+    });
 
     //console.log(props.arr_data[props.index].taskname);
-    
   }
   async function saveinput() {
-
-    
-
+    setIssaving(true);
     const tasklist = doc(database, "todos", props.item.id);
     //console.log(props.item.id);
 
@@ -55,17 +76,10 @@ function Task(props) {
       taskname: editinput,
     });
 
-   
-    
-    modify_arr(tasklist)
-
-    
-
-
-    
-    
+    modify_arr(tasklist);
+    setIssaving(false);
     //console.log(props.arr_data);
-    
+
     if (isediting) setisediting(!isediting);
   }
 
@@ -95,28 +109,49 @@ function Task(props) {
                 value={editinput}
                 onChange={handleditchange}
               />
-
-              <button
-                type="submit"
-                data-mdb-button-init
-                data-mdb-ripple-init
-                className="btn btn-success"
-                onClick={saveinput}
-              >
-                Save
-              </button>
+              {!issaving ? (
+                <button
+                  type="submit"
+                  data-mdb-button-init
+                  data-mdb-ripple-init
+                  className="btn btn-success"
+                  onClick={saveinput}
+                >
+                  Save
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  data-mdb-button-init
+                  data-mdb-ripple-init
+                  className="btn btn-success"
+                  //onClick={saveinput}
+                >
+                  Saving...
+                </button>
+              )}
             </div>
           </td>
         )}
 
         <td scope="col">
-          <button
-            type="button"
-            className="btn btn-danger"
-            onClick={handleDelete}
-          >
-            Delete
-          </button>
+          {!isdeleting ? (
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-danger"
+              //onClick={handleDelete}
+            >
+              Deleting...
+            </button>
+          )}
         </td>
       </tr>
     </tbody>
